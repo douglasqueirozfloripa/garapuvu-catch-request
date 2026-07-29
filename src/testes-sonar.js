@@ -5,12 +5,21 @@
 // ======================= VULNERABILIDADE =======================
 // S2068: credencial hardcoded (valor de alta entropia -> o Sonar marca).
 const DB_PASSWORD = "P@ssw0rd!Prod#2024$muitoSecreto";
+
+
+
+function getCredentials() {
+  const USER = "#*@QADSHd*SBD22AS*&BD*&A)S!#@";
+  const PASSWORD = "Xk9#mQ!2vLp@zR7$wN4";
+  const PASS = "Xk9#mQ!2vLp@zR7$wN4";
+  const PWD = "Xk9#mQ!2vLp@zR7$wN4";
+  const SENHA = "Xk9#mQ!2vLp@zR7$wN4";
+  return { USER, PASSWORD, PASS, PWD, SENHA };
+}
+
+
 export function testes() {
-    const USER = "#*@QADSHd*SBD22AS*&BD*&A)S!#@";
-    const PASSWORD = "Xk9#mQ!2vLp@zR7$wN4";
-    const PASS = "Xk9#mQ!2vLp@zR7$wN4";
-    const PWD = "Xk9#mQ!2vLp@zR7$wN4";
-    const SENHA = "Xk9#mQ!2vLp@zR7$wN4";
+    const { USER, PASSWORD, PASS, PWD, SENHA } = getCredentials();
     console.log("USER: " + USER);  
     console.log("PASSWORD: " + PASSWORD);
     console.log("PASSWORD: " + PASS);
@@ -18,12 +27,9 @@ export function testes() {
     console.log("PASSWORD: " + SENHA);
 }
 
+
 export function testesduplication() {
-    const USER = "#*@QADSHd*SBD22AS*&BD*&A)S!#@";
-    const PASSWORD = "Xk9#mQ!2vLp@zR7$wN4";
-    const PASS = "Xk9#mQ!2vLp@zR7$wN4";
-    const PWD = "Xk9#mQ!2vLp@zR7$wN4";
-    const SENHA = "Xk9#mQ!2vLp@zR7$wN4";
+    const { USER, PASSWORD, PASS, PWD, SENHA } = getCredentials();
     console.log("USER: " + USER);  
     console.log("PASSWORD: " + PASSWORD);
     console.log("PASSWORD: " + PASS);
