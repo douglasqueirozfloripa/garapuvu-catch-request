@@ -255,15 +255,16 @@ npm run sonar           # gera relatórios (ESLint/gitleaks), resolve o Java 21 
 **3. SonarCloud no CI (GitHub Actions)** — o servidor local não é acessível pelo runner, então o CI usa o **SonarCloud** (nuvem). Workflow: [.github/workflows/sonarcloud.yml](.github/workflows/sonarcloud.yml). Ele instala o Chromium, roda o e2e com cobertura, gera os relatórios do ESLint/gitleaks e envia tudo pro SonarCloud.
 
 Configuração (uma vez):
-1. Em [sonarcloud.io](https://sonarcloud.io), entre com o GitHub e **importe o repositório** (cria a *organization* e o projeto). Ajuste a **Project Key** para `garapuvu-catch-request` (a mesma do `sonar-project.properties`).
-2. Gere um token em **My Account → Security**.
-3. No GitHub do repo: **Settings → Secrets and variables → Actions**:
+1. Em [sonarcloud.io](https://sonarcloud.io), entre com o GitHub e **importe o repositório** (cria a *organization* e o projeto). **Anote** o **Organization Key** e o **Project Key** que o SonarCloud atribuiu (o Project Key costuma ser `<org>_<repo>`, ex.: `douglasqueirozclinicorp_garapuvu-catch-request`).
+2. ⚠️ **Desligue a "Automatic Analysis"** em **Administration → Analysis Method** do projeto. Se ficar ligada, ela **conflita** com este CI (roda em paralelo, varre o repo todo e **nunca tem coverage**) — foi o que fez o dashboard mostrar 25k linhas e coverage vazio.
+3. Gere um token em **My Account → Security**.
+4. No GitHub do repo: **Settings → Secrets and variables → Actions**:
    - **Secret** `SONAR_TOKEN` = o token do SonarCloud.
    - **Secret** `TEAM_KEY` = a chave do time (o e2e precisa dela pra gerar coverage).
-   - **Variable** `SONAR_ORGANIZATION` = a sua organização no SonarCloud.
-4. Em **Administration → Analysis Method** do projeto no SonarCloud, **desligue** a "Automatic Analysis" (usaremos o CI).
+   - **Variable** `SONAR_ORGANIZATION` = o Organization Key.
+   - **Variable** `SONAR_PROJECT_KEY` = o Project Key (o `<org>_<repo>` do passo 1).
 
-> Enquanto os secrets não estiverem configurados, o job falha no passo do Sonar — é esperado. Depois de configurados, cada push/PR na `main` publica a análise no SonarCloud.
+> Sintomas de config faltando: `organizationKey=` vazio ou `Not authorized or project not found` = as **variables/secret** não estão setadas. Dashboard com muitas linhas e sem coverage = **Automatic Analysis ainda ligada**.
 
 > No SonarQube, **credencial hardcoded é um _Security Hotspot_** (regra S2068), **não** uma _vulnerability_ — aparece na aba **Security Hotspots**, não no indicador **Security**.
 
